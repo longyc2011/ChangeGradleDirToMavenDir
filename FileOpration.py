@@ -17,7 +17,9 @@ def list_all_sub_files(directory):
     sub_files_list = []
     if os.path.isfile(directory):
         print directory
-        if not directory.startswith("./."):
+        dir_array = os.path.split(directory)
+        file_full_name = str(dir_array[1])
+        if not directory.startswith("./.") and not file_full_name.startswith("."):
             sub_files_list.append(directory)
     else:
         sub_path_list = os.listdir(directory)
@@ -53,6 +55,7 @@ def make_dirs_and_copy_file_to_dest_dirctory(src_file_full_name):
 
     index = len(src_path_list) - 1
     src_path_list.pop(index)
+    version_name = src_path_list.pop(index - 1)
     src_path_list.remove(src_path_list[0])
 
     print src_path_list
@@ -60,13 +63,12 @@ def make_dirs_and_copy_file_to_dest_dirctory(src_file_full_name):
     dest_path_list.append("out")
     for path in src_path_list:
         if string.find(path, ".") != -1:
-
             print path
-
             dest_path_list.extend(path.split("."))
             pass
         else:
             dest_path_list.append(path)
+    dest_path_list.append(version_name)
     print dest_path_list
 
     dest_dir = reduce(os.path.join, dest_path_list)
